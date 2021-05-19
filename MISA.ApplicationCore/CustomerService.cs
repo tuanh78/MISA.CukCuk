@@ -37,6 +37,7 @@ namespace MISA.ApplicationCore
         /// </summary>
         /// <param name="customer">Đối tượng khách hàng</param>
         /// <returns>Đối tượng ServiceResult</returns>
+        /// CreatedBy: PTANH (19/5/2021)
         public ServiceResult InsertCustomer(Customer customer) 
         {
             var serviceResult = new ServiceResult();
@@ -64,11 +65,11 @@ namespace MISA.ApplicationCore
             {
                 var msg = new
                 {
-                    devMsg = new { fieldName = "CustomerCode", msg = "Mã khách hàng đã tồn tại" },
-                    userMsg = "Mã khách hàng đã tồn tại",
+                    devMsg = new { fieldName = "CustomerCode", msg = "Mã khách hàng đã tồn tại !" },
+                    userMsg = "Mã khách hàng đã tồn tại !",
                     Code = 900
                 };
-                serviceResult.MisaCode = MISACode.NotValid;
+                serviceResult.MisaCode = MISACode.DuplicateCustomerCode;
                 serviceResult.Messenger = "Mã khách hàng đã tồn tại";
                 serviceResult.Data = msg;
                 return serviceResult;

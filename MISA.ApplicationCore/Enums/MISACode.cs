@@ -16,12 +16,14 @@ namespace MISA.ApplicationCore.Enums
         /// </summary>
         IsValid = 100,
         /// <summary>
-        /// Dữ liệu không hợp lệ
+        /// Mã khách hàng không hợp lệ
         /// </summary>
-        NotValid = 400,
+        DuplicateCustomerCode = 600 ,
         /// <summary>
         /// Thành công
         /// </summary>
-        Success = 200
+        Success = 200,
+            EmptyValue = 600
+
     }
 }
