@@ -23,7 +23,7 @@ namespace MISA.ApplicationCore.Enums
         /// Thành công
         /// </summary>
         Success = 200,
-            EmptyValue = 600
+        EmptyValue = 610
 
     }
 }

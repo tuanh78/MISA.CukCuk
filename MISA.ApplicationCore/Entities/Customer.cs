@@ -17,6 +17,8 @@ namespace MISA.ApplicationCore.Entities
         public int Gender { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public string CompanyName { get; set; }
+        public string CompanyTaxCode { get; set; }
         public string Address { get; set; }
     }
 }
