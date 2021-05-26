@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace MISA.ApplicationCore.Entities
 {
-    public class ServiceResult
+    public class ServiceResult<T>
     {
-        public object Data { get; set; }
+        public IEnumerable<T> Data { get; set; }
         public string Messenger { get; set; }
         public MISACode MisaCode { get; set; }
     }

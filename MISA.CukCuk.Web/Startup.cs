@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MISA.ApplicationCore;
+using MISA.ApplicationCore.Entities;
 using MISA.ApplicationCore.Interfaces;
 using MISA.ApplicationCore.Services;
 using MISA.Infarstructure;
@@ -30,15 +31,18 @@ namespace MISA.CukCuk.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MISA.CukCuk.Web", Version = "v1" });
             });
 
-            services.AddScoped(typeof(IBaseRepository<>),typeof(BaseRepository<>));
-            services.AddScoped(typeof(IBaseService<>),typeof(BaseService<>));
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ICustomerGroupRepository, CustomerGroupRepository>();
+            services.AddScoped<ICustomerGroupService, CustomerGroupService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

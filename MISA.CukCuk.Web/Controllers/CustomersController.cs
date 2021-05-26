@@ -12,10 +12,47 @@ namespace MISA.CukCuk.Web.Controllers
 {
     public class CustomersController : BaseEntityController<Customer>
     {
-        IBaseService<Customer> _baseService;
-        public CustomersController(IBaseService<Customer> baseService) : base(baseService)
+        private ICustomerService _customerService;
+
+        public CustomersController(IBaseService<Customer> baseService, ICustomerService customerService) : base(baseService)
         {
-            _baseService = baseService;
+            _customerService = customerService;
+        }
+
+        public override IActionResult Post([FromBody] Customer customer)
+        {
+            var rowEffects = _customerService.Add(customer);
+            if (rowEffects == -1)
+            {
+                return BadRequest("Mã khách hàng đã tồn tại !");
+            }
+            else if (rowEffects == -2)
+            {
+                return BadRequest("Số điện thoại đã tồn tại !");
+            }
+            else if (rowEffects < 1)
+            {
+                return NoContent();
+            }
+            return Created("Thêm thành công", rowEffects);
+        }
+
+        public override IActionResult Put(Guid id, [FromBody] Customer entity)
+        {
+            var rowEffects = _customerService.Update(entity, id);
+            if (rowEffects == -1)
+            {
+                return BadRequest("Mã khách hàng đã tồn tại !");
+            }
+            else if (rowEffects == -2)
+            {
+                return BadRequest("Số điện thoại đã tồn tại !");
+            }
+            else if (rowEffects < 1)
+            {
+                return NoContent();
+            }
+            return Ok(rowEffects);
         }
     }
 }
