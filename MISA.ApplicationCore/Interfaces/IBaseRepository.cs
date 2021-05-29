@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace MISA.ApplicationCore.Interfaces
 {
-    public interface IBaseRepository<TEntity>
+    public interface IBaseRepository<T>
     {
         /// <summary>
         /// Lấy danh sách đối tượng
         /// </summary>
         /// <returns>Danh sách đối tượng</returns>
         /// CreatedBy: PTANH (20/5/2021)
-        IEnumerable<TEntity> GetEntities();
+        IEnumerable<T> GetEntities();
 
         /// <summary>
         /// Lấy đối tượng theo Id
@@ -21,7 +21,7 @@ namespace MISA.ApplicationCore.Interfaces
         /// <param name="entityId">Id của đối tượng</param>
         /// <returns>Đối tượng cần tìm</returns>
         /// CreatedBy: PTANH (20/5/2021)
-        TEntity GetEntity(Guid entityId);
+        T GetEntity(Guid entityId);
 
         /// <summary>
         /// Thêm đối tượng mới
@@ -29,7 +29,7 @@ namespace MISA.ApplicationCore.Interfaces
         /// <param name="entity">Đối tượng cần thêm</param>
         /// <returns>Số bản ghi đã thêm</returns>
         /// CreatedBy: PTANH (20/5/2021)
-        int Add(TEntity entity);
+        int Add(T entity);
 
         /// <summary>
         /// Sửa thông tin đối tượng
@@ -37,7 +37,7 @@ namespace MISA.ApplicationCore.Interfaces
         /// <param name="entity">Đối tượng cần sửa thông tin</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: PTANH (20/5/2021)
-        int Update(TEntity entity, Guid entityId);
+        int Update(T entity, Guid entityId);
 
         /// <summary>
         /// Xóa một đối tượng
@@ -55,7 +55,7 @@ namespace MISA.ApplicationCore.Interfaces
         /// <param name="filter">Điều kiện lọc thêm</param>
         /// <returns>Danh sách đối tượng</returns>
         /// CreatedBy: PTANH (23/5/2021)
-        IEnumerable<TEntity> GetEntitiesPaging(int pageIndex, int pageSize, string filter);
+        IEnumerable<T> GetEntitiesPaging(int pageIndex, int pageSize, string filter);
 
         /// <summary>
         /// Lấy ra tổng số lượng bản ghi

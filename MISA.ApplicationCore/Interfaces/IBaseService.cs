@@ -30,7 +30,7 @@ namespace MISA.ApplicationCore.Interfaces
         /// <param name="entity">Đối tượng cần thêm</param>
         /// <returns>Số bản ghi đã thêm</returns>
         /// CreatedBy: PTANH (20/5/2021)
-        int Add(T entity);
+        ServiceResult Add(T entity);
 
         /// <summary>
         /// Sửa thông tin đối tượng
@@ -55,7 +55,7 @@ namespace MISA.ApplicationCore.Interfaces
         /// <param name="filter">Điều kiện lọc thêm</param>
         /// <returns>Danh sách đối tượng</returns>
         /// CreatedBy: PTANH (23/5/2021)
-        ServiceResult<T> GetEntitiesPaging(int pageIndex, int pageSize, string filter);
+        ServiceResult GetEntitiesPaging(int pageIndex, int pageSize, string filter);
 
         /// <summary>
         /// Lấy ra tổng số lượng bản ghi

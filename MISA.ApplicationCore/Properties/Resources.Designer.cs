@@ -59,5 +59,50 @@ namespace MISA.ApplicationCore.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to đã tồn tại trên hệ thống.
+        /// </summary>
+        internal static string Error_Duplicate {
+            get {
+                return ResourceManager.GetString("Error_Duplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dữ liệu không hợp lệ.
+        /// </summary>
+        internal static string Error_Invalid {
+            get {
+                return ResourceManager.GetString("Error_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Số điện thoại không được để trống.
+        /// </summary>
+        internal static string Error_PhoneNumber {
+            get {
+                return ResourceManager.GetString("Error_PhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to không được để trống.
+        /// </summary>
+        internal static string Error_Required {
+            get {
+                return ResourceManager.GetString("Error_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thành công.
+        /// </summary>
+        internal static string Msg_Success {
+            get {
+                return ResourceManager.GetString("Msg_Success", resourceCulture);
+            }
+        }
     }
 }

@@ -18,21 +18,21 @@ namespace MISA.ApplicationCore.Services
             _customerRepository = customerRepository;
         }
 
-        public override int Add(Customer entity)
-        {
-            var customerByCode = _customerRepository.GetCustomerByCode(entity.CustomerCode);
-            var customerByPhoneNumber = _customerRepository.GetCustomerByPhoneNumber(entity.PhoneNumber);
-            if (customerByCode != null)
-            {
-                return -1;
-            }
-            else if (customerByPhoneNumber != null)
-            {
-                return -2;
-            }
+        //public override ServiceResult Add(Customer entity)
+        //{
+        //    var customerByCode = _customerRepository.GetCustomerByCode(entity.CustomerCode);
+        //    var customerByPhoneNumber = _customerRepository.GetCustomerByPhoneNumber(entity.PhoneNumber);
+        //    if (customerByCode != null)
+        //    {
+        //        return -1;
+        //    }
+        //    else if (customerByPhoneNumber != null)
+        //    {
+        //        return -2;
+        //    }
 
-            return base.Add(entity);
-        }
+        //    return base.Add(entity);
+        //}
 
         public override int Update(Customer entity, Guid entityId)
         {

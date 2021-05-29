@@ -18,11 +18,13 @@ namespace MISA.ApplicationCore.Entities
         /// Mã khách hàng
         /// </summary>
 
+        [Required("Mã khách hàng")]
         public string CustomerCode { get; set; }
 
         /// <summary>
         /// Họ tên khách hàng
         /// </summary>
+        [Required("Họ và tên")]
         public string FullName { get; set; }
 
         /// <summary>
@@ -58,6 +60,8 @@ namespace MISA.ApplicationCore.Entities
         /// <summary>
         /// Số điện thoại
         /// </summary>
+        [Required("Số điện thoại")]
+        [CheckDuplicate("Mã khách hàng", "Mã khách hàng đã tồn tại rồi nhé bro nhé !")]
         public string PhoneNumber { get; set; }
 
         /// <summary>

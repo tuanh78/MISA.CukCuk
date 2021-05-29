@@ -12,16 +12,32 @@ namespace MISA.ApplicationCore.Services
     public class BaseService<T> : IBaseService<T>
     {
         protected IBaseRepository<T> _baseRepository;
+        private ServiceResult _serviceResult;
 
         public BaseService(IBaseRepository<T> baseRepository)
         {
+            _serviceResult = new ServiceResult();
             _baseRepository = baseRepository;
         }
 
-        public virtual int Add(T entity)
+        public virtual ServiceResult Add(T entity)
         {
+            // validate dữ liệu
+            ValidateObject(entity);
+            if (_serviceResult.MisaServiceCode == MISAServiceCode.BadRequest)
+            {
+                return _serviceResult;
+            }
             var rowEffects = _baseRepository.Add(entity);
-            return rowEffects;
+            if (rowEffects == 0)
+            {
+                _serviceResult = new ServiceResult() { Data = rowEffects, Messenger = { "Tạo thất bại" }, MisaServiceCode = MISAServiceCode.NoContent };
+            }
+            else
+            {
+                _serviceResult = new ServiceResult() { Data = rowEffects, Messenger = { "Tạo thành công" }, MisaServiceCode = MISAServiceCode.Created };
+            }
+            return _serviceResult;
         }
 
         public int Delete(Guid entityId)
@@ -42,24 +58,24 @@ namespace MISA.ApplicationCore.Services
             return entities;
         }
 
-        public ServiceResult<T> GetEntitiesPaging(int pageIndex, int pageSize, string filter)
+        public ServiceResult GetEntitiesPaging(int pageIndex, int pageSize, string filter)
         {
-            ServiceResult<T> serviceResult;
+            ServiceResult serviceResult;
             if (pageIndex < 1 || pageSize < 1)
             {
-                serviceResult = new ServiceResult<T>()
+                serviceResult = new ServiceResult()
                 {
-                    Messenger = "Dữ liệu không hợp lệ",
+                    Messenger = { Properties.Resources.Error_Invalid },
                     Data = { },
-                    MisaCode = MISACode.InValid
+                    MisaServiceCode = MISAServiceCode.InValid
                 };
             }
             var entities = _baseRepository.GetEntitiesPaging(pageIndex, pageSize, filter);
-            serviceResult = new ServiceResult<T>()
+            serviceResult = new ServiceResult()
             {
-                Messenger = "Lấy dữ liệu thành công",
+                Messenger = new List<string> { Properties.Resources.Msg_Success },
                 Data = entities,
-                MisaCode = MISACode.Success
+                MisaServiceCode = MISAServiceCode.Success
             };
 
             return serviceResult;
@@ -81,6 +97,49 @@ namespace MISA.ApplicationCore.Services
         {
             var rowEffects = _baseRepository.Update(entity, entityId);
             return rowEffects;
+        }
+
+        private void ValidateObject(T entity)
+        {
+            var properties = typeof(T).GetProperties();
+            _serviceResult.Messenger = new List<string>();
+            foreach (var property in properties)
+            {
+                var propValue = property.GetValue(entity);
+                // Nếu có attribute là Required thì thực hiện kiểm tra bắt buộc nhập
+                if (property.IsDefined(typeof(Required), true) && (propValue == null || propValue.ToString() == string.Empty))
+                {
+                    var requiredAttribute = property.GetCustomAttributes(typeof(Required), true).FirstOrDefault();
+                    if (requiredAttribute != null)
+                    {
+                        var propertyText = (requiredAttribute as Required).PropertyName;
+                        var errorMessage = (requiredAttribute as Required).ErrorMessage;
+                        _serviceResult.Messenger.Add(errorMessage == null ? $"{propertyText} {Properties.Resources.Error_Required}".ToString() : errorMessage.ToString());
+                    }
+                    _serviceResult.MisaServiceCode = MISAServiceCode.BadRequest;
+                }
+            }
+
+            //foreach (var property in properties)
+            //{
+            //    var propValue = property.GetValue(entity);
+            //    var propName = property.Name;
+            //    var talbeName = typeof(T).ToString();
+            //    // Nếu có attribute là duplicate thì thực hiện kiểm tra bắt buộc nhập
+            //    if (property.IsDefined(typeof(CheckDuplicate), true))
+            //    {
+            //        var requiredAttribute = property.GetCustomAttributes(typeof(CheckDuplicate), true).FirstOrDefault();
+            //        if (requiredAttribute != null)
+            //        {
+            //            var propertyText = (requiredAttribute as CheckDuplicate).PropertyName;
+            //            var errorMessage = (requiredAttribute as CheckDuplicate).ErrorMessage.ToString();
+            //            var sql = $"Proc_Get{talbeName}By{propName}";
+            //            var entity = _baseRepository;
+            //            _serviceResult.Messenger.Add(errorMessage == null ? $"{propertyText} {Properties.Resources.Error_Duplicate}".ToString() : errorMessage);
+            //        }
+            //        _serviceResult.MisaServiceCode = MISAServiceCode.BadRequest;
+            //    }
+            //}
         }
     }
 }

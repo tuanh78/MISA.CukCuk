@@ -12,11 +12,11 @@ namespace MISA.CukCuk.Web.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class BaseEntityController<TEntity> : ControllerBase
+    public class BaseEntityController<T> : ControllerBase
     {
-        protected IBaseService<TEntity> _baseService;
+        protected IBaseService<T> _baseService;
 
-        public BaseEntityController(IBaseService<TEntity> baseService)
+        public BaseEntityController(IBaseService<T> baseService)
         {
             _baseService = baseService;
         }
@@ -47,19 +47,19 @@ namespace MISA.CukCuk.Web.Controllers
 
         // POST api/<BaseEntityController>
         [HttpPost]
-        public virtual IActionResult Post([FromBody] TEntity entity)
+        public virtual IActionResult Post([FromBody] T entity)
         {
-            var rowEffects = _baseService.Add(entity);
-            if (rowEffects < 1)
+            var serviceResult = _baseService.Add(entity);
+            if (serviceResult.MisaServiceCode == MISAServiceCode.NoContent)
             {
                 return NoContent();
             }
-            return Created("Them thanh cong", rowEffects);
+            return Created("Them thanh cong", serviceResult);
         }
 
         // PUT api/<BaseEntityController>/5
         [HttpPut("{id}")]
-        public virtual IActionResult Put(Guid id, [FromBody] TEntity entity)
+        public virtual IActionResult Put(Guid id, [FromBody] T entity)
         {
             var rowEffects = _baseService.Update(entity, id);
             if (rowEffects < 1)
@@ -85,11 +85,12 @@ namespace MISA.CukCuk.Web.Controllers
         public IActionResult Paging([FromQuery] int pageIndex, [FromQuery] int pageSize, [FromQuery] string filter)
         {
             var entities = _baseService.GetEntitiesPaging(pageIndex, pageSize, filter);
-            if (entities.MisaCode == MISACode.InValid)
+            IList<T> collectionEntities = (IList<T>)entities.Data;
+            if (entities.MisaServiceCode == MISAServiceCode.InValid)
             {
                 return BadRequest(entities);
             }
-            else if (entities.Data.ToList().Count == 0)
+            else if (collectionEntities.Count == 0)
             {
                 return NoContent();
             }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MISA.ApplicationCore.Entities;
+using MISA.ApplicationCore.Enums;
 using MISA.ApplicationCore.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -21,20 +22,16 @@ namespace MISA.CukCuk.Web.Controllers
 
         public override IActionResult Post([FromBody] Customer customer)
         {
-            var rowEffects = _customerService.Add(customer);
-            if (rowEffects == -1)
+            var serviceResult = _customerService.Add(customer);
+            if (serviceResult.MisaServiceCode == MISAServiceCode.BadRequest)
             {
-                return BadRequest("Mã khách hàng đã tồn tại !");
+                return BadRequest(serviceResult);
             }
-            else if (rowEffects == -2)
-            {
-                return BadRequest("Số điện thoại đã tồn tại !");
-            }
-            else if (rowEffects < 1)
+            else if (serviceResult.MisaServiceCode < MISAServiceCode.BadRequest)
             {
                 return NoContent();
             }
-            return Created("Thêm thành công", rowEffects);
+            return Created("Thêm thành công", serviceResult);
         }
 
         public override IActionResult Put(Guid id, [FromBody] Customer entity)
