@@ -35,7 +35,7 @@ namespace MISA.ApplicationCore.Services
             }
             else
             {
-                _serviceResult = new ServiceResult() { Data = rowEffects, Messenger = { "Tạo thành công" }, MisaServiceCode = MISAServiceCode.Created };
+                _serviceResult = new ServiceResult() { Data = rowEffects, Messenger = new List<string>{ "Tạo thành công" }, MisaServiceCode = MISAServiceCode.Created };
             }
             return _serviceResult;
         }
