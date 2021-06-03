@@ -120,14 +120,26 @@
   <data name="Error_Duplicate" xml:space="preserve">
     <value>đã tồn tại trên hệ thống</value>
   </data>
+  <data name="Error_EndDay" xml:space="preserve">
+    <value>không được sau ngày</value>
+  </data>
   <data name="Error_Invalid" xml:space="preserve">
     <value>Dữ liệu không hợp lệ</value>
+  </data>
+  <data name="Error_Length" xml:space="preserve">
+    <value>không được vượt quá</value>
   </data>
   <data name="Error_PhoneNumber" xml:space="preserve">
     <value>Số điện thoại không được để trống</value>
   </data>
   <data name="Error_Required" xml:space="preserve">
     <value>không được để trống</value>
+  </data>
+  <data name="Error_StartDay" xml:space="preserve">
+    <value>không được trước ngày</value>
+  </data>
+  <data name="Error_TypeOf" xml:space="preserve">
+    <value>không đúng định dạng</value>
   </data>
   <data name="Msg_Success" xml:space="preserve">
     <value>Thành công</value>

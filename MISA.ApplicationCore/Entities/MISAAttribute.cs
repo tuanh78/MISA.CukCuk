@@ -11,13 +11,12 @@ namespace MISA.ApplicationCore.Entities
     }
 
     /// <summary>
-    /// Attribute để xác định check bắt buộc nhập
+    /// Attribute check rỗng
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class Required : Attribute
+    public class MISARequired : Attribute
     {
         /// <summary>
-        /// Tên của property
+        /// Tên thuộc tính
         /// </summary>
         public string PropertyName;
 
@@ -26,33 +25,92 @@ namespace MISA.ApplicationCore.Entities
         /// </summary>
         public string ErrorMessage;
 
-        public Required(string propertyName, string errorMessage = null)
+        public MISARequired(string propertyName, string errorMessage = null)
         {
-            this.PropertyName = propertyName;
-            this.ErrorMessage = errorMessage;
+            PropertyName = propertyName;
+            ErrorMessage = errorMessage;
         }
     }
 
     /// <summary>
-    /// Attribute để xác định check trùng
+    /// Attribute kiểm tra độ dài dữ liệu
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class CheckDuplicate : Attribute
+    public class MISALength : Attribute
     {
         /// <summary>
-        /// Tên của property
+        /// Tên thuộc tính
         /// </summary>
         public string PropertyName;
 
         /// <summary>
-        /// Câu thông báo tùy chỉnh
+        /// Thông báo lỗi tùy chỉnh
         /// </summary>
         public string ErrorMessage;
 
-        public CheckDuplicate(string propertyName, string errorMessage = null)
+        public int CharacterLength;
+
+        public MISALength(string propertyName, string errorMessage, int characterLength)
         {
             this.PropertyName = propertyName;
             this.ErrorMessage = errorMessage;
+            this.CharacterLength = characterLength;
         }
     }
+
+    /// <summary>
+    /// Attribute check dữ liệu ngày tháng
+    /// </summary>
+    public class MISADatetime : Attribute
+    {
+        /// <summary>
+        /// Tên thuộc tính
+        /// </summary>
+        public string PropertyName;
+
+        /// <summary>
+        /// Câu thông báo lỗi tùy chỉnh
+        /// </summary>
+        public string ErrorMessage;
+
+        /// <summary>
+        /// Ngày bắt đầu
+        /// </summary>
+        public DateTime StartDay;
+
+        /// <summary>
+        /// Ngày kết thúc
+        /// </summary>
+        public DateTime EndDay;
+
+        public MISADatetime(string propertyName, string errorMessage, DateTime startDay)
+        {
+            this.PropertyName = propertyName;
+            this.ErrorMessage = errorMessage;
+            //this.StartDay = datestartDay;
+            //this.EndDay = endDay;
+        }
+    }
+
+    ///// <summary>
+    ///// Attribute để xác định check trùng
+    ///// </summary>
+    //[AttributeUsage(AttributeTargets.Property)]
+    //public class CheckDuplicate : Attribute
+    //{
+    //    /// <summary>
+    //    /// Tên của property
+    //    /// </summary>
+    //    public string PropertyName;
+
+    //    /// <summary>
+    //    /// Câu thông báo tùy chỉnh
+    //    /// </summary>
+    //    public string ErrorMessage;
+
+    //    public CheckDuplicate(string propertyName, string errorMessage = null)
+    //    {
+    //        this.PropertyName = propertyName;
+    //        this.ErrorMessage = errorMessage;
+    //    }
+    //}
 }

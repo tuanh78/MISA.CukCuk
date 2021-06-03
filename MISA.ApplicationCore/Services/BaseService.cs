@@ -35,7 +35,7 @@ namespace MISA.ApplicationCore.Services
             }
             else
             {
-                _serviceResult = new ServiceResult() { Data = rowEffects, Messenger = new List<string>{ "Tạo thành công" }, MisaServiceCode = MISAServiceCode.Created };
+                _serviceResult = new ServiceResult() { Data = rowEffects, Messenger = new List<string> { "Tạo thành công" }, MisaServiceCode = MISAServiceCode.Created };
             }
             return _serviceResult;
         }
@@ -107,16 +107,58 @@ namespace MISA.ApplicationCore.Services
             {
                 var propValue = property.GetValue(entity);
                 // Nếu có attribute là Required thì thực hiện kiểm tra bắt buộc nhập
-                if (property.IsDefined(typeof(Required), true) && (propValue == null || propValue.ToString() == string.Empty))
+                if (property.IsDefined(typeof(MISARequired), true) && (propValue == null || propValue.ToString() == string.Empty))
                 {
-                    var requiredAttribute = property.GetCustomAttributes(typeof(Required), true).FirstOrDefault();
+                    var requiredAttribute = property.GetCustomAttributes(typeof(MISARequired), true).FirstOrDefault();
                     if (requiredAttribute != null)
                     {
-                        var propertyText = (requiredAttribute as Required).PropertyName;
-                        var errorMessage = (requiredAttribute as Required).ErrorMessage;
+                        var propertyText = (requiredAttribute as MISARequired).PropertyName;
+                        var errorMessage = (requiredAttribute as MISARequired).ErrorMessage;
                         _serviceResult.Messenger.Add(errorMessage == null ? $"{propertyText} {Properties.Resources.Error_Required}".ToString() : errorMessage.ToString());
                     }
                     _serviceResult.MisaServiceCode = MISAServiceCode.BadRequest;
+                }
+
+                if (property.IsDefined(typeof(MISALength), true))
+                {
+                    var lengthAttribute = property.GetCustomAttributes(typeof(MISALength), true).FirstOrDefault();
+                    var characterLength = (lengthAttribute as MISALength).CharacterLength;
+                    if (lengthAttribute != null && propValue.ToString().Length > characterLength)
+                    {
+                        var propertyText = (lengthAttribute as MISALength).PropertyName;
+                        var errorMessage = (lengthAttribute as MISALength).ErrorMessage;
+                        _serviceResult.Messenger.Add(errorMessage == null ? $"{propertyText} {Properties.Resources.Error_Length } {characterLength} ký tự".ToString() : errorMessage.ToString());
+                    }
+                }
+
+                if (property.IsDefined(typeof(MISADatetime), true))
+                {
+                    var datetimeAttribute = property.GetCustomAttributes(typeof(MISADatetime), true).FirstOrDefault();
+                    var startDay = (datetimeAttribute as MISADatetime).StartDay;
+                    var endDay = (datetimeAttribute as MISADatetime).EndDay;
+                    if (datetimeAttribute != null)
+                    {
+                        if (property.GetType() != typeof(DateTime))
+                        {
+                            var propertyText = (datetimeAttribute as MISADatetime).PropertyName;
+                            var errorMessage = (datetimeAttribute as MISADatetime).ErrorMessage;
+                            _serviceResult.Messenger.Add(errorMessage == null ? $"{propertyText} {Properties.Resources.Error_TypeOf } ngày tháng năm".ToString() : errorMessage.ToString());
+                        }
+                        DateTime dayCheck = DateTime.Parse(propValue.ToString());
+                        if (DateTime.Compare(startDay, dayCheck) < 0)
+                        {
+                            var propertyText = (datetimeAttribute as MISADatetime).PropertyName;
+                            var errorMessage = (datetimeAttribute as MISADatetime).ErrorMessage;
+                            _serviceResult.Messenger.Add(errorMessage == null ? $"{propertyText} {Properties.Resources.Error_StartDay } {startDay.ToString()}".ToString() : errorMessage.ToString());
+                        }
+
+                        if (DateTime.Compare(endDay, dayCheck) > 0)
+                        {
+                            var propertyText = (datetimeAttribute as MISADatetime).PropertyName;
+                            var errorMessage = (datetimeAttribute as MISADatetime).ErrorMessage;
+                            _serviceResult.Messenger.Add(errorMessage == null ? $"{propertyText} {Properties.Resources.Error_EndDay } {endDay.ToString()}".ToString() : errorMessage.ToString());
+                        }
+                    }
                 }
             }
 

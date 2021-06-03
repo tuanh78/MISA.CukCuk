@@ -70,11 +70,29 @@ namespace MISA.ApplicationCore.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to không được sau ngày.
+        /// </summary>
+        internal static string Error_EndDay {
+            get {
+                return ResourceManager.GetString("Error_EndDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dữ liệu không hợp lệ.
         /// </summary>
         internal static string Error_Invalid {
             get {
                 return ResourceManager.GetString("Error_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to không được vượt quá.
+        /// </summary>
+        internal static string Error_Length {
+            get {
+                return ResourceManager.GetString("Error_Length", resourceCulture);
             }
         }
         
@@ -93,6 +111,24 @@ namespace MISA.ApplicationCore.Properties {
         internal static string Error_Required {
             get {
                 return ResourceManager.GetString("Error_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to không được trước ngày.
+        /// </summary>
+        internal static string Error_StartDay {
+            get {
+                return ResourceManager.GetString("Error_StartDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to không đúng định dạng.
+        /// </summary>
+        internal static string Error_TypeOf {
+            get {
+                return ResourceManager.GetString("Error_TypeOf", resourceCulture);
             }
         }
         

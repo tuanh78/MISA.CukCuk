@@ -1,6 +1,7 @@
 ﻿using MISA.ApplicationCore.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,13 +19,14 @@ namespace MISA.ApplicationCore.Entities
         /// Mã khách hàng
         /// </summary>
 
-        [Required("Mã khách hàng")]
+        [MISARequired("Mã khách hàng")]
+        [MISALength("Mã khách hàng", null, 5)]
         public string CustomerCode { get; set; }
 
         /// <summary>
         /// Họ tên khách hàng
         /// </summary>
-        [Required("Họ và tên")]
+        [MISARequired("Họ và tên")]
         public string FullName { get; set; }
 
         /// <summary>
@@ -44,6 +46,7 @@ namespace MISA.ApplicationCore.Entities
         /// Ngày sinh
         /// </summary>
 
+        [MISADatetime("Ngày sinh nhật", "", DateTime.Now)]
         public DateTime? DateOfBirth { get; set; }
 
         /// <summary>
@@ -60,8 +63,7 @@ namespace MISA.ApplicationCore.Entities
         /// <summary>
         /// Số điện thoại
         /// </summary>
-        [Required("Số điện thoại")]
-        [CheckDuplicate("Mã khách hàng", "Mã khách hàng đã tồn tại rồi nhé bro nhé !")]
+        [MISARequired("Số điện thoại")]
         public string PhoneNumber { get; set; }
 
         /// <summary>
