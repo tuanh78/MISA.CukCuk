@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
+using MISA.ApplicationCore.Enums;
 using MISA.ApplicationCore.Interfaces;
 using MySql.Data.MySqlClient;
 using System;
@@ -24,6 +25,56 @@ namespace MISA.Infarstructure
         }
 
         #endregion Constructor
+
+        public int SaveData(T entity)
+        {
+            try
+            {
+                var properties = entity.GetType().GetProperties();
+                var parameters = new DynamicParameters();
+                var rowAffects = 0;
+                foreach (var property in properties)
+                {
+                    var propertyName = property.Name;
+                    var propertyValue = property.GetValue(entity);
+                    var propertyType = property.PropertyType;
+
+                    if (propertyType == typeof(Guid) || propertyType == typeof(Guid?))
+                    {
+                        parameters.Add($"@{propertyName}", propertyValue, DbType.String);
+                    }
+                    else
+                    {
+                        parameters.Add($"@{propertyName}", propertyValue);
+                    }
+                }
+                var editMode = (EditMode)entity.GetType().GetProperty("EditMode").GetValue(entity);
+                var sql = string.Empty;
+                if (editMode == EditMode.Add)
+                {
+                    sql = $"Proc_Insert{_tableName}";
+                }
+                else if (editMode == EditMode.Edit)
+                {
+                    sql = $"Proc_Update{_tableName}";
+                }
+                else if (editMode == EditMode.Delete)
+                {
+                    sql = $"Proc_Delete{_tableName}";
+                }
+                // Thực thi commandText:
+                if (!string.IsNullOrWhiteSpace(sql))
+                {
+                    rowAffects = _dbConnection.Execute(sql, parameters, commandType: CommandType.StoredProcedure);
+                }
+                // Trả về kết quả: (số bản ghi mới thêm được)
+                return rowAffects;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         public int Add(T entity)
         {

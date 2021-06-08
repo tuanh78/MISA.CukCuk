@@ -40,6 +40,62 @@ namespace MISA.ApplicationCore.Services
             return _serviceResult;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        public bool SaveData(List<T> entities)
+        {
+            if (entities?.Count > 0 && Validate(entities))
+            {
+                PreSave(entities);
+                foreach (var entity in entities)
+                {
+                    //var editMode = (EditMode)entity.GetType().GetProperty("EditMode").GetValue(entity);
+                    _baseRepository.SaveData(entity);
+                    //var entityId = (Guid)entity.GetType().GetProperty("CustomerId").GetValue(entity);
+                    //var /*editMode*/ = Convert.ToInt32(oEditMode);
+                    //if (editMode == EditMode.Add)
+                    //{
+                    //    entity.GetType().GetProperty("CustomerId").SetValue(entity, Guid.NewGuid());
+                    //    Add(entity);
+                    //}
+                    //else if (editMode == EditMode.Edit)
+                    //{
+                    //    Update(entity, entityId);
+                    //}
+                    //else if (editMode == EditMode.Delete)
+                    //{
+                    //    Delete(entityId);
+                    //}
+                }
+                AfterSave(entities);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Hàm custom object trước khi save
+        /// </summary>
+        /// <param name="entities"></param>
+        public virtual void PreSave(List<T> entities)
+        {
+        }
+
+        // <summary>
+        /// Hàm kiểm tra tính đúng đắn của object trước khi cất
+        /// </summary>
+        /// <param name="entities"></param>
+        public virtual bool Validate(List<T> entities)
+        {
+            return true;
+        }
+
+        public virtual void AfterSave(List<T> entities)
+        {
+        }
+
         public int Delete(Guid entityId)
         {
             var rowEffects = _baseRepository.Delete(entityId);

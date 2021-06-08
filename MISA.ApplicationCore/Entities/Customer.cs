@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MISA.ApplicationCore.Entities
 {
-    public class Customer
+    public class Customer : BaseEntity
     {
         /// <summary>
         /// Khóa chính
@@ -46,7 +46,7 @@ namespace MISA.ApplicationCore.Entities
         /// Ngày sinh
         /// </summary>
 
-        [MISADatetime("Ngày sinh nhật", "", DateTime.Now)]
+        [MISADatetime("Ngày sinh nhật", "", "2001-01-01", "2021-01-01")]
         public DateTime? DateOfBirth { get; set; }
 
         /// <summary>

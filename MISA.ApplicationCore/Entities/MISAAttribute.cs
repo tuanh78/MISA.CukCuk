@@ -82,12 +82,20 @@ namespace MISA.ApplicationCore.Entities
         /// </summary>
         public DateTime EndDay;
 
-        public MISADatetime(string propertyName, string errorMessage, DateTime startDay)
+        public MISADatetime(string propertyName, string errorMessage, string startDay, string endDay)
         {
             this.PropertyName = propertyName;
             this.ErrorMessage = errorMessage;
-            //this.StartDay = datestartDay;
-            //this.EndDay = endDay;
+            //this.StartDay = DateTime.Parse(startDay);
+            if (!DateTime.TryParse(endDay, out this.EndDay))
+            {
+                this.EndDay = new DateTime(DateTime.Now.Year, 1, 1);
+            }
+            if (!DateTime.TryParse(startDay, out this.StartDay))
+            {
+                this.StartDay = new DateTime(this.EndDay.Year - 20, 1, 1);
+            }
+            //this.EndDay = DateTime.Parse(endDay);
         }
     }
 

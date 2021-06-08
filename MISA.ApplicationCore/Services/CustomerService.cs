@@ -33,6 +33,44 @@ namespace MISA.ApplicationCore.Services
 
         //    return base.Add(entity);
         //}
+        public override void PreSave(List<Customer> entities)
+        {
+            base.PreSave(entities);
+        }
+
+        public override bool Validate(List<Customer> entities)
+        {
+            var result = true;
+            result = base.Validate(entities);
+            // thực hiện custom validate
+            foreach (var item in entities)
+            {
+            }
+
+            return result;
+        }
+
+        public override void AfterSave(List<Customer> entities)
+        {
+            base.AfterSave(entities);
+            var memberService = new MembershipService();
+            foreach (var item in entities)
+            {
+                var membership = new Membership();
+                if (item.EditMode == Enums.EditMode.Add)
+                {
+                    membership.CustomerId = item.CustomerId;
+                    membership.MembershipId = Guid.NewGuid();
+                    membership.TotalPoint = 0;
+                    membership.EditMode = Enums.EditMode.Add;
+                }
+                else if (item.EditMode == Enums.EditMode.Edit)
+                {
+                    // viết stored update điểm điểm theo CustomerId
+                    UdpateTotalPointByCustomer(membership.CustomerId, 95);
+                }
+            }
+        }
 
         public override int Update(Customer entity, Guid entityId)
         {

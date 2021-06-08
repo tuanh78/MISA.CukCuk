@@ -70,4 +70,13 @@ namespace MISA.ApplicationCore.Enums
         /// </summary>
         NoContent = 204
     }
+
+    public enum EditMode
+    {
+        None = 0,
+        Add = 1,
+        Edit = 2,
+        View = 3,
+        Delete = 4
+    }
 }

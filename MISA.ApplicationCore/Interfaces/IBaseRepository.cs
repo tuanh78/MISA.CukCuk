@@ -39,6 +39,9 @@ namespace MISA.ApplicationCore.Interfaces
         /// CreatedBy: PTANH (20/5/2021)
         int Update(T entity, Guid entityId);
 
+        int SaveData(T entity)
+
+
         /// <summary>
         /// Xóa một đối tượng
         /// </summary>
